@@ -45,7 +45,7 @@ def ricker(f, length, dt):
 #
 # Data import
 # Important: Before importing, the data has to be cleaned of 'bad' data such as rows with p-wave amplitudes < 95 or spikes in density related to core section transitions.
-# Cleaning can be done in Excel or with Pandas but is not implemented/shown here.
+# Cleaning can be done in Excel or with Pandas but is not implemented/shown here. Edit for using your own .csv files.
 # Data import
 #
     
@@ -54,7 +54,7 @@ petrophys_1150 = np.genfromtxt('1150_petrophysical.csv', delimiter=";", skip_hea
 
 
 #
-# Extract and define variables from the variable petrophys_1150; calculate tvdss (z) and dts
+# Extract and define variables from the variable petrophys_1150; calculate tvdss (z) and dts. Edit for your own file.
 #
 
 td = petrophys_1150[:,0]                        # Total depth below sea-floor [m]
