@@ -17,6 +17,8 @@ Requires python >= 3.5
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import tkinter as tk
+from tkinter import filedialog
 
 
 #
@@ -45,23 +47,28 @@ def ricker(f, length, dt):
 #
 # Data import
 # Important: Before importing, the data has to be cleaned of 'bad' data such as rows with p-wave amplitudes < 95 or spikes in density related to core section transitions.
-# Cleaning can be done in Excel or with Pandas but is not implemented/shown here. Edit for using your own .csv files.
+# Cleaning can be done in Excel or with Pandas but is not implemented/shown here.
 # Data import
 #
+
+# Add open file dialog   
+root = tk.Tk()
+root.withdraw() # Hide tkinter main window
+file_path = filedialog.askopenfilename()
     
-labels = np.genfromtxt('1150_petrophysical.csv', delimiter=';', dtype=str)[0,:]
-petrophys_1150 = np.genfromtxt('1150_petrophysical.csv', delimiter=";", skip_header=1)
+labels = np.genfromtxt(file_path, delimiter=',', dtype=str)[0,:]
+data = np.genfromtxt(file_path, delimiter=",", skip_header=1)
 
 
 #
-# Extract and define variables from the variable petrophys_1150; calculate tvdss (z) and dts. Edit for your own file.
+# Extract and define variables from the variable data; calculate tvdss (z) and dts
 #
 
-td = petrophys_1150[:,0]                        # Total depth below sea-floor [m]
-ap = petrophys_1150[:,5]                        # P-wave amplitude [0-100]
-vp = petrophys_1150[:,6]                        # P-wave velocity [m/s]
-rho = petrophys_1150[:,7]                       # Bulk density [g/cm^3]
-phi = petrophys_1150[:,8]                       # Fractional porosity [0-1]
+td = data[:,0]                        # Total depth below sea-floor [m]
+ap = data[:,1]                        # P-wave amplitude [0-100]
+vp = data[:,2]                        # P-wave velocity [m/s]
+rho = data[:,3]                       # Bulk density [g/cm^3]
+# phi = data[:,4]                       # Fractional porosity [0-1]
 z = td[0 :] + 245                               # Total vertical depth below sea level [m]
 dts = 1e6 / vp                                  # Convert p-wave velocity to slowness [us/m]
 
@@ -223,5 +230,3 @@ axe.set_axis_off()
 axe.invert_yaxis()
 
 plt.show()
-
-
