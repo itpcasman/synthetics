@@ -4,4 +4,4 @@ This repository contains code to model synthetic seismograms with data derived f
 Example data is available in the data.csv file. Your own data should follow the same structure; otherwise it will be necessary to adjust the initial variable assignments.
 
 Figure output:
-![alt text](https://github.com/andreas-paul/synthetics/example.png "Example output figure")
+![alt text](https://github.com/andreas-paul/synthetics/blob/master/example.png "Example output figure")
