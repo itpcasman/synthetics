@@ -3,7 +3,8 @@
 """
 Create synthetic seismics from petrophysical data (MSCL) of piston cores.
 Parameters used: bulk density (rho), slowness (1/p-wave velocity).
-Note: The code needs to be readjusted if the synthetic seismogrsm of a core not starting at the sea floor needs to be calculated.
+Note: The code needs to be readjusted if the synthetic seismogram of a core
+not starting at the sea floor needs to be calculated.
 Requires python >= 3.5
 
 @author: Andreas Paul
@@ -25,7 +26,7 @@ from tkinter import filedialog
 # Function definitions
 #
 
-def w_pressure(depth): 
+def w_pressure(depth):
     """ Calculate water pressure at different depths in kPa """
     w_pres = 1.03e3 * 9.8 * depth
     w_pres = w_pres + 1.01e5
@@ -33,8 +34,10 @@ def w_pressure(depth):
     return w_pres
 
 def w_acoustic_vel(T,S,Z,lat):
-    """ Calculate acoustic velocity of water dependent on water depth, temperature, salinity and latitude. After Leroy et al. (2008) J. Acoust. Soc. Am. 124(5). """
-    w_ac_vel = 1402.5 + 5 * T - 5.44e-2 * T**2 + 2.1e-4 * T**3 + 1.33 * S - 1.23e-2 * S * T + 8.7e-5 * S * T**2 + 1.56e-2 * Z + 2.55e-7 * Z**2 - 7.3e-12 * Z**3 + 1.2e-6 * Z * (lat - 45) - 9.5e-13 * T * Z**3 + 3e-7 * T**2 * Z + 1.43e-5 * S * Z    
+    """ Calculate acoustic velocity of water dependent on water depth,
+    temperature, salinity and latitude. After Leroy et al. (2008)
+    J. Acoust. Soc. Am. 124(5). """
+    w_ac_vel = 1402.5 + 5 * T - 5.44e-2 * T**2 + 2.1e-4 * T**3 + 1.33 * S - 1.23e-2 * S * T + 8.7e-5 * S * T**2 + 1.56e-2 * Z + 2.55e-7 * Z**2 - 7.3e-12 * Z**3 + 1.2e-6 * Z * (lat - 45) - 9.5e-13 * T * Z**3 + 3e-7 * T**2 * Z + 1.43e-5 * S * Z
     return w_ac_vel
 
 def ricker(f, length, dt):
@@ -51,11 +54,11 @@ def ricker(f, length, dt):
 # Data import
 #
 
-# Add open file dialog   
+# Add open file dialog
 root = tk.Tk()
 root.withdraw() # Hide tkinter main window
 file_path = filedialog.askopenfilename()
-    
+
 labels = np.genfromtxt(file_path, delimiter=',', dtype=str)[0,:]
 data = np.genfromtxt(file_path, delimiter=",", skip_header=1)
 
@@ -77,7 +80,7 @@ dts = 1e6 / vp                                  # Convert p-wave velocity to slo
 # Depth - Time conversion and velocity model
 #
 
-core_depth = 245    # Depth at coring location in meters 
+core_depth = 245    # Depth at coring location in meters
 water_pres = w_pressure(core_depth)# Calculate water pressure at core depth
 v_wat_core_depth = w_acoustic_vel(20,3.5,core_depth,4)  # Water acoustic vel at core depth (20 C, 3.5% salinity, core depth, 4 deg lat)
 v_wat_surf = w_acoustic_vel(28,3.5,0,4) # Water acoustic velocity at surface
@@ -85,7 +88,7 @@ v_wat_surf = w_acoustic_vel(28,3.5,0,4) # Water acoustic velocity at surface
 # Calculate TWT in water in s (sea-level --> sea floor --> sea-level)
 owt_water = np.abs(core_depth) / ((v_wat_core_depth + v_wat_surf) / 2)
 twt_water = 2.0 * (np.abs(core_depth) / ((v_wat_core_depth + v_wat_surf) / 2))
-log_start_time = owt_water 
+log_start_time = owt_water
 log_start_time_ms = owt_water * 1000
 log_start_time_twt = twt_water
 
